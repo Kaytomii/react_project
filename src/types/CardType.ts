@@ -1,6 +1,6 @@
 export type CardType = {
     title: string;
     description: string;
-    image: number;
+    views: number;
     is_show: boolean;
 }
