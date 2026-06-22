@@ -1,0 +1,10 @@
+.disabled {
+    opacity: 0.5;
+    pointer-events: none;
+}
+.ChangeColor
+{
+    color: red;
+    font-weight: bold;
+    font-size: 28px;
+}
