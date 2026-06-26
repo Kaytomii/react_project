@@ -25,6 +25,11 @@ const AddProduct = ({products, setProducts}:CreateProductProps) => {
         };
 
         setProducts([...products, newProduct]);
+
+        setTitle("");
+        setPrice(0);
+        setCount(0);
+        setImage("");
     }
     return (
         <form onSubmit={handlerSubmit} className="w-full rounded-3xl bg-white p-8 shadow-xl">
