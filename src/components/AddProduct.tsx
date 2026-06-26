@@ -1,4 +1,4 @@
-import Products from "../models/Products.ts";
+//import Products from "../models/Products.ts";
 import type {ProductType} from "../types/ProductType.ts";
 import {type ChangeEvent, type SubmitEvent, useState} from "react";
 
@@ -7,12 +7,24 @@ type CreateProductProps = {
     setProducts: (products: ProductType[]) => void;
 }
 const AddProduct = ({products, setProducts}:CreateProductProps) => {
+    const [is_active, setIsActive] = useState<boolean>(true);
     const [image, setImage] = useState<string>("");
-    const [count, setCount] = useState<string>("");
-    const [price, setPrice] = useState<string>("");
+    const [count, setCount] = useState<number>(0);
+    const [price, setPrice] = useState<number>(0);
     const [title, setTitle] = useState<string>("");
     const handlerSubmit = (e: SubmitEvent<HTMLFormElement>) => {
         e.preventDefault();
+
+        const newProduct: ProductType = {
+            id: crypto.randomUUID(),
+            title,
+            price,
+            count,
+            image,
+            is_active
+        };
+
+        setProducts([...products, newProduct]);
     }
     return (
         <form onSubmit={handlerSubmit} className="w-full rounded-3xl bg-white p-8 shadow-xl">
@@ -57,7 +69,7 @@ const AddProduct = ({products, setProducts}:CreateProductProps) => {
                         placeholder="0"
                         className="w-full rounded-2xl border border-zinc-200 px-4 py-3 outline-none transition focus:border-black"
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setPrice(e.target.value);
+                            setPrice(+e.target.value);
                         }}
                     />
                 </div>
@@ -72,7 +84,7 @@ const AddProduct = ({products, setProducts}:CreateProductProps) => {
                         placeholder="0"
                         className="w-full rounded-2xl border border-zinc-200 px-4 py-3 outline-none transition focus:border-black"
                         onChange={(e: ChangeEvent<HTMLInputElement>) => {
-                            setCount(e.target.value);
+                            setCount(+e.target.value);
                         }}
                     />
                 </div>
@@ -101,7 +113,10 @@ const AddProduct = ({products, setProducts}:CreateProductProps) => {
                         <input
                             type="checkbox"
                             className="h-5 w-5 accent-black"
-                            defaultChecked
+                            checked={is_active}
+                            onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                setIsActive(e.target.checked);
+                            }}
                         />
                     </label>
                 </div>
