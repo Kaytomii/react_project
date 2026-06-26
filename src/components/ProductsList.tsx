@@ -1,11 +1,13 @@
-import products from "../models/Products.ts";
 import {Product} from "./Product.tsx";
-import {useState} from "react";
+import type {ProductType} from "../types/ProductType.ts";
 
-const ProductsList = () => {
-    const [listproducts, setListproducts] = useState<Product[]>([...products]);
+type ProductsProps = {
+    products: ProductType[];
+}
+const ProductsList = ({products}: ProductsProps) => {
+    //const [listproducts, setListproducts] = useState<Product[]>([...products]);
     return (<div className="flex p-8">
-        {listproducts.map(product => {
+        {products.map(product => {
             return (<Product key={product.id} product={product} />);
         })}
         </div>)

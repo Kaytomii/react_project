@@ -1,6 +1,21 @@
-const AddProduct = () => {
+import Products from "../models/Products.ts";
+import type {ProductType} from "../types/ProductType.ts";
+import {type ChangeEvent, type SubmitEvent, useState} from "react";
+
+type CreateProductProps = {
+    products: ProductType[];
+    setProducts: (products: ProductType[]) => void;
+}
+const AddProduct = ({products, setProducts}:CreateProductProps) => {
+    const [image, setImage] = useState<string>("");
+    const [count, setCount] = useState<string>("");
+    const [price, setPrice] = useState<string>("");
+    const [title, setTitle] = useState<string>("");
+    const handlerSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+        e.preventDefault();
+    }
     return (
-        <form className="w-full rounded-3xl bg-white p-8 shadow-xl">
+        <form onSubmit={handlerSubmit} className="w-full rounded-3xl bg-white p-8 shadow-xl">
             <h2 className="mb-8 text-3xl font-bold text-zinc-900">
                 Новый товар
             </h2>
@@ -12,8 +27,12 @@ const AddProduct = () => {
                     </label>
                     <input
                         type="text"
-                        placeholder="Apple Watch Ultra 2"
+                        value={title}
+                        placeholder="Your Product Name"
                         className="w-full rounded-2xl border border-zinc-200 px-4 py-3 outline-none transition focus:border-black"
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                                setTitle(e.target.value);
+                        }}
                     />
                 </div>
 
@@ -34,8 +53,12 @@ const AddProduct = () => {
                     </label>
                     <input
                         type="number"
-                        placeholder="799"
+                        value={price}
+                        placeholder="0"
                         className="w-full rounded-2xl border border-zinc-200 px-4 py-3 outline-none transition focus:border-black"
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            setPrice(e.target.value);
+                        }}
                     />
                 </div>
 
@@ -45,8 +68,12 @@ const AddProduct = () => {
                     </label>
                     <input
                         type="number"
-                        placeholder="15"
+                        value={count}
+                        placeholder="0"
                         className="w-full rounded-2xl border border-zinc-200 px-4 py-3 outline-none transition focus:border-black"
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            setCount(e.target.value);
+                        }}
                     />
                 </div>
 
@@ -56,8 +83,12 @@ const AddProduct = () => {
                     </label>
                     <input
                         type="text"
+                        value={image}
                         placeholder="/images/watch.png"
                         className="w-full rounded-2xl border border-zinc-200 px-4 py-3 outline-none transition focus:border-black"
+                        onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                            setImage(e.target.value);
+                        }}
                     />
                 </div>
 
