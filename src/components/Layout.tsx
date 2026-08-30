@@ -1,18 +1,22 @@
-import {Link, Outlet} from "react-router";
-import { useContext } from "react";
+import {Outlet} from "react-router";
+import { useContext, useState } from "react";
 import { AuthContext } from "@/context/AuthContext";
+import AuthModal from "@/components/AuthModal";
+import RegisterForm from "@/components/RegisterForm";
+import LoginForm from "@/components/LoginForm";
 
 const Layout = () => {
     const { user, logout } = useContext(AuthContext);
+
+    const [openRegister, setOpenRegister] = useState(false);
+    const [openLogin, setOpenLogin] = useState(false);
 
     return (
         <>
             <header className="bg-gray-900 text-white p-4 flex justify-between">
                 <nav className="flex gap-4">
-                    <Link to="/">Home</Link>
-                    <Link to="/about">About</Link>
-                    <Link to="/register">Register</Link>
-                    <Link to="/login">Login</Link>
+                    <button onClick={() => setOpenRegister(true)}>Register</button>
+                    <button onClick={() => setOpenLogin(true)}>Login</button>
                 </nav>
 
                 <div>
@@ -35,6 +39,16 @@ const Layout = () => {
             <main className="p-6">
                 <Outlet />
             </main>
+
+            {/* Register Modal */}
+            <AuthModal open={openRegister} close={() => setOpenRegister(false)}>
+                <RegisterForm close={() => setOpenRegister(false)} />
+            </AuthModal>
+
+            {/* Login Modal */}
+            <AuthModal open={openLogin} close={() => setOpenLogin(false)}>
+                <LoginForm close={() => setOpenLogin(false)} />
+            </AuthModal>
         </>
     );
 };
