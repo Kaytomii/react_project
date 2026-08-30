@@ -1,30 +1,31 @@
-import {createBrowserRouter} from "react-router";
-//import CategoriesList from "@/components/CategoryList.tsx";
-import Layout from "@/components/Layout.tsx";
-import Error from "@/components/Error.tsx";
+import { createBrowserRouter } from "react-router";
+import Layout from "@/components/Layout";
+import Error from "@/components/Error";
+import Register from "@/pages/Register";
+import Login from "@/pages/Login";
 
 export const routes = createBrowserRouter([
     {
         path: "/",
-        element: <Layout/>,
-        errorElement: <Error/>,
+        element: <Layout />,
+        errorElement: <Error />,
         children: [
             {
                 index: true,
-                element: <div>Home Page</div>
+                element: <div>Home Page</div>,
             },
             {
-                path: 'about',
-                element: <div>About Page</div>
-            }
-        ]
-    }
-    // {
-    //     path: "about",
-    //     element: <>About Page</>
-    // },
-    // {
-    //     path: "contacts",
-    //     element: <>Contacts</>
-    // }
-])
+                path: "about",
+                element: <div>About Page</div>,
+            },
+            {
+                path: "register",
+                element: <Register />,
+            },
+            {
+                path: "login",
+                element: <Login />,
+            },
+        ],
+    },
+]);
