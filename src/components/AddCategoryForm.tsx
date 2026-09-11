@@ -1,80 +1,70 @@
-import { useState, useContext } from "react";
-import { CategoriesContext } from "@/context/CategoriesContext";
+import { useForm } from "react-hook-form";
+
+type CategoryFormType = {
+    name: string;
+    slug: string;
+    parentId: number | null;
+};
 
 const AddCategoryForm = ({ close }: { close: () => void }) => {
-    const { categories } = useContext(CategoriesContext);
+    const {
+        register,
+        handleSubmit,
+        formState: { errors },
+    } = useForm<CategoryFormType>();
 
-    const [name, setName] = useState("");
-    const [slug, setSlug] = useState("");
-    const [parentId, setParentId] = useState<number | null>(null);
-    const [error, setError] = useState("");
+    const URL =
+        import.meta.env.VITE_PATH_TO_SERVER +
+        import.meta.env.VITE_PATH_TO_API +
+        "category";
 
-    const URL = import.meta.env.VITE_PATH_TO_SERVER + import.meta.env.VITE_PATH_TO_API + "category";
-
-    const handleSubmit = async (e: React.FormEvent) => {
-        e.preventDefault();
-
+    const onSubmit = async (data: CategoryFormType) => {
         const res = await fetch(URL, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({
-                name,
-                slug,
-                parentId,
-            }),
+            body: JSON.stringify(data),
         });
 
-        const data = await res.json();
-
         if (!res.ok) {
-            setError(data.message || "Error adding category");
+            alert("Error creating category");
             return;
         }
 
         close();
-        window.location.reload(); // оновлюємо список категорій
+        window.location.reload();
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
-            <h2 className="text-2xl font-bold">Add Category</h2>
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+            <h2 className="text-2xl font-bold">Create Category</h2>
 
             <input
-                type="text"
+                {...register("name", { required: "Name is required" })}
                 placeholder="Category name"
                 className="w-full border px-4 py-2 rounded"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
             />
+            {errors.name && (
+                <p className="text-red-500">{errors.name.message}</p>
+            )}
 
             <input
-                type="text"
+                {...register("slug", { required: "Slug is required" })}
                 placeholder="Slug"
                 className="w-full border px-4 py-2 rounded"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
+            />
+            {errors.slug && (
+                <p className="text-red-500">{errors.slug.message}</p>
+            )}
+
+            <input
+                type="number"
+                {...register("parentId")}
+                placeholder="Parent ID (optional)"
+                className="w-full border px-4 py-2 rounded"
             />
 
-            <select
-                className="w-full border px-4 py-2 rounded"
-                value={parentId ?? ""}
-                onChange={(e) =>
-                    setParentId(e.target.value === "" ? null : Number(e.target.value))
-                }
-            >
-                <option value="">No parent (root)</option>
-
-                {categories.map((cat) => (
-                    <option key={cat.id} value={cat.id}>
-                        {cat.name}
-                    </option>
-                ))}
-            </select>
-
-            {error && <p className="text-red-500">{error}</p>}
-
             <button className="w-full bg-green-600 text-white py-2 rounded">
-                Add Category
+                Create Category
             </button>
         </form>
     );
