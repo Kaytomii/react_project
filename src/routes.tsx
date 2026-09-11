@@ -1,6 +1,7 @@
 import { createBrowserRouter } from "react-router";
 import Layout from "@/components/Layout";
 import Error from "@/components/Error";
+import CategoriesPagination from "@/components/CategoriesPagination";
 
 export const routes = createBrowserRouter([
     {
@@ -15,6 +16,10 @@ export const routes = createBrowserRouter([
             {
                 path: "about",
                 element: <div>About Page</div>,
+            },
+            {
+                path: "categories",
+                element: <CategoriesPagination />
             }
         ]
     }
